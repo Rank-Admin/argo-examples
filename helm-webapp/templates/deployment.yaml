@@ -16,9 +16,11 @@ spec:
         app: {{ .Values.appName }}
         tier: frontend
     spec:
+      # ── Pod‑level security context ─────────────────────────────
       securityContext:
         seccompProfile:
           type: RuntimeDefault
+      # ── Containers ────────────────────────────────────────────
       containers:
         - name: mycontainer
           image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
@@ -34,9 +36,11 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "100m"
+          # ── Container‑level security context ───────────────────
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
+            runAsUser: 1000           # 👈 added line
             capabilities:
               drop:
                 - ALL
