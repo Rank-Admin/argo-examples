@@ -4,3 +4,13 @@ replicas: 5
 configmap:
   data:
     CUSTOM_HEADER: 'This is on the DEV environment!'
+podSecurityContext:
+  seccompProfile:
+    type: RuntimeDefault
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  capabilities:
+    drop:
+      - ALL
