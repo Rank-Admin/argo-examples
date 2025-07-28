@@ -4,3 +4,26 @@ metadata:
   name: mywebapp
 spec:
   replicas: 3
+  selector:
+    matchLabels:
+      app: mywebapp
+  template:
+    metadata:
+      labels:
+        app: mywebapp
+    spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: mycontainer
+          image: your-image:tag
+          ports:
+            - containerPort: 80
+          securityContext:
+            runAsNonRoot: true          # must run as non-root user
+            runAsUser: 1000             # specify non-root user ID (adjust if needed)
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
